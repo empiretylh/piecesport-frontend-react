@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+.my-Font{
+  font-family: 'Chewy', sans-serif;
+}
+
+.sugar-text {
+  font-family: 'Chewy', sans-serif;
+  text-shadow: 
+    2px 2px 0 #1e3a8a,
+    4px 4px 10px rgba(0,0,0,0.3);
+}
