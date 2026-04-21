@@ -11,7 +11,6 @@ import rightplayer from "../assets/img/welcomeImg/rightplayer.png";
 import background1 from "../assets/img/welcomeImg/background1.png";
 
 
-
 export default function Welcome() {
 
   const [number, setNumber] = useState("");
