@@ -7,11 +7,10 @@ import pieceballicon from "../assets/img/welcomeImg/pieceballicon.png";
 import leftplayer from "../assets/img/welcomeImg/leftplayer.png";
 import rightplayer from "../assets/img/welcomeImg/rightplayer.png";
 
-
 import background1 from "../assets/img/welcomeImg/background1.png";
 
 
-export default function Welcome() {
+export default function WelcomePage() {
 
   const [number, setNumber] = useState("");
   const navigate = useNavigate();
@@ -31,11 +30,11 @@ export default function Welcome() {
 
     console.log(fullNumber); 
 
-    navigate("/homepage"); // redirect
+    navigate("/homepage"); 
   };
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col bg-gradient-to-b from-teal-400 via-blue-500 to-yellow-400 flex flex-col items-center">
+    <div className="relative w-full h-screen overflow-hidden flex flex-col bg-gradient-to-b from-teal-400 via-blue-500 to-yellow-400 flex flex-col items-center">
 
       <div className="flex flex-col items-center">
 
@@ -56,63 +55,56 @@ export default function Welcome() {
         </div>
         {/* Dia Count  */}
 
-        {/* Header Section */}          
+        {/* Title Section */}          
         <div className="flex items-center justify-center">
           <img src={pieceballicon} alt="pieceballicon" />
         </div>
             
-        <div className="w-full flex flex-col items-center mt-[-15px]">
-
-          <div className="text-white text-center">
-            <h2 className="text-md tracking-wide">SPORT FUN ZONE</h2>
-            <h1 className="text-5xl font-bold mt-2">PLAY & WIN</h1>
-          </div>
+        <div className="w-full flex items-center justify-evenly lg:justify-between  mt-[-15px]">
 
           <div className="mt-3 text-center">
-            <h3 className="text-blue-800 text-4xl font-bold drop-shadow-md my-Font">Weekly</h3>
-            <h2 className="text-yellow-300 text-6xl font-extrabold sugar-text">Challenge</h2>
+            <h3 className="text-blue-800 text-2xl sm:text-4xl font-bold drop-shadow-md my-Font">Weekly</h3>
+            <h2 className="text-yellow-300 text-4xl sm:text-6xl font-extrabold sugar-text">Challenge</h2>
+          </div>
+
+          <div className="w-1/3 z-10">
+            <img src={trophy} alt="trophy" className="w-full h-auto object-contain"/>
           </div>
 
         </div>
       
       </div>
 
-      {/* Middle Images Section */}
-      <div className="relative w-full flex justify-center mt-6">
+      {/* Player Images Section */}
+      <div className="relative w-full flex justify-center mt-30 sm:mt-6">
 
-        <img src={leftplayer} alt="left" className="absolute left-0 -bottom-38 w-32 sm:w-40 md:w-48 lg:w-56 z-10"/>
-
-        <div className="w-2/3 max-w-[260px] z-10">
-          <img src={trophy} alt="trophy" className="w-full h-auto object-contain"/>
-        </div>
-
-        <img src={rightplayer} alt="right" className="absolute right-0 -bottom-38 w-32 sm:w-40 md:w-48 lg:w-56 z-10"/>
+        <img src={leftplayer} alt="left" className="absolute left-0 -bottom-38  w-24 sm:w-32 md:w-40 lg:w-46 z-10"/>
+        <img src={rightplayer} alt="right" className="absolute right-0 -bottom-38 w-24 sm:w-32 md:w-40 lg:w-46 z-10"/>
 
       </div>
 
 
       {/* Banner */}
-      <div className="w-100 sm:w-2/3 md:w-1/2 max-w-[400px] -translate-y-12 z-10">
+      <div className="w-100 sm:w-2/3 md:w-1/2 max-w-[250px] sm:max-w-[300px] -translate-y-12 z-10 animate-[scalePulse_1.5s_ease-in-out_infinite]">
         <img src={footballicon} alt="footballicon" className="w-full h-auto object-contain" />
       </div>
 
       <div className="relative w-full">
 
-        <span className="absolute w-full h-5 bg-yellow-300 -translate-y-12"></span>
-        <span className="absolute w-full h-2 bg-blue-600 -translate-y-5"></span>
+        <span className="absolute w-full h-5 bg-yellow-300 sm:-translate-y-12"></span>
+        <span className="absolute w-full h-2 bg-blue-600 translate-y-7 sm:-translate-y-5"></span>
         
         <div className="flex">
-          <span className="w-full h-1 bg-yellow-300 -translate-y-2"></span>
+          <span className="w-full h-1 bg-yellow-300 translate-y-10 sm:-translate-y-2"></span>
           <span className="w-full -translate-y-12"></span>
-          <span className="w-full h-1 bg-yellow-300 -translate-y-2"></span>
+          <span className="w-full h-1 bg-yellow-300 translate-y-10 sm:-translate-y-2"></span>
         </div>
 
       </div>
 
 
       {/* Bottom Section */}
-      <div
-        className="w-full flex flex-col flex-1 items-center justify-end gap-4 py-10 bg-no-repeat bg-cover bg-bottom"
+      <div className="w-full flex flex-col flex-1 items-center justify-end gap-4 py-10 bg-no-repeat bg-cover bg-bottom"
         style={{ backgroundImage: `url(${background1})` }}
       >
 
