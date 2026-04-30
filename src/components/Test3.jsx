@@ -12,13 +12,18 @@ import titlefour from "../assets/img/footballmatchimg/titlefour.png";
 import liverpool from "../assets/img/footballmatchimg/liverpool.png";
 import palace from "../assets/img/footballmatchimg/palace.png";
 import arsenal from "../assets/img/footballmatchimg/arsenal.png";
+import south from "../assets/img/footballmatchimg/south.png";
+import brent from "../assets/img/footballmatchimg/brent.png";
+import manu from "../assets/img/footballmatchimg/manu.png";
+
+
 
 
 
 const matches = [
   { home: "Crystal Palace", away: "Liverpool", homeimg: palace , awayimg: liverpool },
-  { home: "Arsenal", away: "Southampton", homeimg: arsenal , awayimg: liverpool },
-  { home: "Brentford", away: "Wolves", homeimg: palace , awayimg: liverpool },
+  { home: "Arsenal", away: "Southampton", homeimg: arsenal , awayimg: south },
+  { home: "Brentford", away: "Man Utd", homeimg: brent , awayimg: manu },
   { home: "Leicester", away: "Bournemouth", homeimg: palace , awayimg: liverpool },
   { home: "Man City", away: "Fulham", homeimg: palace , awayimg: liverpool },
   { home: "Leganes", away: "Valencia", homeimg: palace , awayimg: liverpool },
@@ -34,6 +39,9 @@ const teamLogos = {
   "Liverpool": liverpool,
   "Crystal Palace": palace,
   "Arsenal": arsenal,
+  "Southampton": south,
+  "Brentford": brent,
+  "Man Utd": manu
 };
 
 export default function Test3() {
@@ -55,7 +63,6 @@ export default function Test3() {
               
       </div>
       {/* Back Btn  */}
-
 
       {/* TOP BAR */}
       <div className="w-full flex items-center justify-center">
@@ -103,65 +110,17 @@ export default function Test3() {
         </div>
 
       </div>
-
-      {/* MATCH CARD */}
-      {/* <div className="w-full max-w-xl flex-1 flex flex-col bg-black/40 backdrop-blur-lg rounded-2xl overflow-hidden">
-
-        <div className="flex bg-white/80 rounded-full m-3 p-1 text-sm">
-          <button className="flex-1 bg-gradient-to-r from-blue-600 to-yellow-400 text-white rounded-full py-1">
-            Match
-          </button>
-          <button className="flex-1 text-gray-700">History</button>
-          <button className="flex-1 text-gray-700">Reward</button>
-        </div>
-
-        <div className="mx-3 rounded-xl bg-gradient-to-r from-blue-600 to-yellow-400 text-white text-center py-2 text-sm">
-          Prediction Week - 9
-        </div>
-
-        <div className="flex-1 px-3 py-2 flex flex-col">
-
-          <div className="flex-1 overflow-y-auto pr-1 space-y-2">
-            {matches.map((m, index) => (
-
-              <div key={index} className="grid grid-cols-3 items-center text-white text-sm border-b border-white/30 pb-2">
-
-                <div className="flex items-center justify-between">
-                  <span className="truncate">{m.home}</span>
-                  <div className="w-6 h-6"> 
-                    <img src={liverpool} alt="liverpool" />
-                  </div>
-                </div>
-
-                <div className="text-center font-bold">VS</div>
-
-                <div className="flex items-center justify-between">
-                  <div className="w-6 h-6"> 
-                    <img src={palace} alt="palace" />
-                  </div>
-                  <span className="truncate">{m.away}</span>
-                </div>
-              </div>
-
-            ))}
-          </div>
-
-          <button className="mt-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-yellow-400 text-white font-bold">
-            Play
-          </button>
-        </div>
-        
-      </div> */}
+      
       {/* MATCH CARD */}
       <div className="w-full max-w-xl flex-1 flex flex-col bg-black/40 backdrop-blur-lg rounded-2xl overflow-hidden mb-4">
         
         {/* TABS */}
         <div className="flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm">
-          <button className="flex-1 bg-gradient-to-r from-blue-600 to-yellow-400 text-white rounded-full py-1">
-            Match
-          </button>
-          <button className="flex-1 text-gray-700">History</button>
-          <button className="flex-1 text-gray-700">Reward</button>
+
+          <button className="flex-1 bg-gradient-to-r from-blue-600 to-yellow-400 text-white rounded-full py-1 cursor-pointer">Match</button>
+          <button className="flex-1 text-gray-700 cursor-pointer">History</button>
+          <button className="flex-1 text-gray-700 cursor-pointer">Reward</button>
+
         </div>
 
         {/* HEADER (Stay Fixed) */}

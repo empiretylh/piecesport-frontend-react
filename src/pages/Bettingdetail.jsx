@@ -66,8 +66,8 @@ export default function BettingPage() {
       {/*  TOP TEXT  */}
       <div className="relative z-10 w-full flex flex-col items-center text-center gap-1 -mt-12 animate-[scalePulse_1.5s_ease-in-out_infinite]">
 
-        <h3 className="text-blue-800 text-3xl sm:text-4xl font-bold drop-shadow-md my-Font">20000Ks</h3>
-        <h2 className="text-yellow-300 text-5xl sm:text-6xl font-extrabold sugar-text">Challenge</h2>
+        <h3 className="text-blue-800 text-2xl sm:text-3xl font-bold drop-shadow-md my-Font">20000Ks</h3>
+        <h2 className="text-yellow-300 text-4xl sm:text-5xl font-extrabold sugar-text">Challenge</h2>
 
       </div>
 
@@ -81,9 +81,7 @@ export default function BettingPage() {
 
             {/* Header Area */}
             <div className="relative z-20 w-full bg-white/10 backdrop-blur-md p-4 text-center border-b border-white/10">
-              <span className="text-white/90 text-sm font-bold tracking-widest uppercase">
-                  Correct Matches - Soon
-              </span>
+              <span className="text-white/90 text-sm font-bold tracking-widest uppercase">Correct Matches - Soon</span>
             </div>
 
             {/* MATCH PREDICTION AREA */}
@@ -92,9 +90,9 @@ export default function BettingPage() {
               {/* VS SECTION */}
               <div className="w-full flex items-center justify-center gap-8 border-b border-white/10 pb-8">
                   
-                <div className="flex flex-col items-center gap-3 text-center w-24">
+                <div className="flex flex-col items-center gap-1 text-center w-24">
 
-                  <div className="w-16 h-16 rounded-full bg-white/10 p-2 border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                  <div className="w-10">
                     <img src={state.homeLogo || pieceballicon} alt={state.home} className="w-full h-full object-contain" />
                   </div>
                   <span className="text-xs font-bold text-white uppercase tracking-tight truncate w-full">{state.home}</span>
@@ -103,9 +101,9 @@ export default function BettingPage() {
 
                 <span className="text-3xl font-black italic text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]">VS</span>
 
-                <div className="flex flex-col items-center gap-3 text-center w-24">
+                <div className="flex flex-col items-center gap-1 text-center w-24">
                   
-                  <div className="w-16 h-16 rounded-full bg-white/10 p-2 border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                  <div className="w-10">
                     <img src={state.awayLogo || pieceballicon} alt={state.away} className="w-full h-full object-contain" />
                   </div>
                   <span className="text-xs font-bold text-white uppercase tracking-tight truncate w-full">{state.away}</span>
