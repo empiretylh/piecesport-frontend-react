@@ -81,7 +81,7 @@ export default function Test() {
                 </div>
             </div>
 
-            {/* GRID SECTION — KEY FIX 7: flex-1 + overflow-hidden keeps it inside remaining space */}
+            {/* GRID SECTION */}
             <div className="flex-1 overflow-hidden px-3 py-3 grid grid-cols-2 md:grid-cols-3 gap-2 auto-rows-fr">
 
                 {/* Play & Win */}
@@ -105,8 +105,6 @@ export default function Test() {
                         </p>
                     </div>
                 </div>
-
-                {/* Reusable small card wrapper — inline for clarity */}
 
                 {/* Soccer Quiz */}
                 <div className="group relative rounded-xl p-[1px] overflow-hidden cursor-pointer transition duration-300 hover:scale-105">

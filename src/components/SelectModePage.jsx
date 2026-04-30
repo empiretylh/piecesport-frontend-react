@@ -15,7 +15,6 @@ import football from "../assets/img/selectgame/football.png";
 import mma from "../assets/img/selectgame/mma.png";
 
 
-
 export default function SelectModePage() {
 
   const navigate = useNavigate();

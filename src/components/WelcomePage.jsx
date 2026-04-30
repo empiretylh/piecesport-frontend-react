@@ -133,7 +133,7 @@ export default function WelcomePage() {
           )}
 
         <button onClick={handlePlay} disabled={number.length !== 9}
-        className="bg-blue-700 text-white text-6xl font-bold px-10 py-4 rounded-4xl shadow-lg active:scale-95 transition
+        className="bg-blue-700 text-white text-6xl font-bold px-10 py-3 rounded-4xl shadow-lg active:scale-95 transition
         disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-50">
           PLAY
         </button>
