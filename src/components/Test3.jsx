@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,8 +15,6 @@ import arsenal from "../assets/img/footballmatchimg/arsenal.png";
 import south from "../assets/img/footballmatchimg/south.png";
 import brent from "../assets/img/footballmatchimg/brent.png";
 import manu from "../assets/img/footballmatchimg/manu.png";
-
-
 
 
 
@@ -50,6 +48,60 @@ export default function Test3() {
   const backArrowClick = ()=> navigate("/selectmode");  
 
   const [selectedMatch, setSelectedMatch] = useState(null);
+  const [activeTab, setActiveTab] = useState("match");
+  const [bets, setBets] = useState({});
+
+  const tabs = ["match", "history", "reward"];
+  const activeIndex = tabs.indexOf(activeTab);
+
+  useEffect(() => {
+    const storedbets = JSON.parse(localStorage.getItem("bets")) || {};
+    setBets(storedbets);
+  }, []);
+
+  function Match({ m, isBetted, selectedMatch, setSelectedMatch, teamLogos }){
+    return (
+
+      <div onClick={() =>setSelectedMatch({ ...m, homeLogo: teamLogos[m.home], awayLogo: teamLogos[m.away]})}
+      className={`grid grid-cols-3 items-center text-white text-sm cursor-pointer transition border-b p-4 border-white/30 ${
+      isBetted ? "bg-green-400/40" : selectedMatch?.home === m.home && selectedMatch?.away === m.away ? "bg-yellow-400/40" : 
+      "hover:bg-gray-400/40"}`}>
+
+        {/* HOME */}
+        <div className="flex items-center justify-between gap-2">
+          <span className="truncate">{m.home}</span>
+          <img src={m.homeimg} className="w-6 h-6" />
+        </div>
+
+        <div className="text-center font-bold">VS</div>
+
+        {/* AWAY */}
+        <div className="flex items-center justify-between gap-2">
+          <img src={m.awayimg} className="w-6 h-6" />
+          <span className="truncate text-right">{m.away}</span>
+        </div>
+
+      </div>
+      
+    );
+  }
+
+  const handlePlayClick = () => {
+
+    if (!selectedMatch) return;
+
+    const matchKey = `${selectedMatch.home}_vs_${selectedMatch.away}`;
+    const existingBet = bets[matchKey];
+
+    navigate("/betting", {
+      state: {
+        ...selectedMatch,
+        existingBet,
+      },
+    });
+
+  };
+
 
   return (
     <div className="h-screen w-full overflow-hidden bg-gradient-to-br from-slate-400 via-blue-400 to-amber-400 flex flex-col items-center justify-between p-3">
@@ -65,7 +117,7 @@ export default function Test3() {
       {/* Back Btn  */}
 
       {/* TOP BAR */}
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center select-none">
 
         {/* Title logo */}
         <div className="flex items-center justify-center -mt-8">
@@ -93,7 +145,7 @@ export default function Test3() {
 
 
       {/* TITLE + BADGES */}
-      <div className="flex flex-col items-center gap-4 w-full">
+      <div className="flex flex-col items-center gap-4 w-full select-none">
 
         {/* TITLE IMAGE */}
         <div className="w-full max-w-md h-16 flex items-center justify-center -mt-4 block sm:hidden">
@@ -115,15 +167,38 @@ export default function Test3() {
       <div className="w-full max-w-xl flex-1 flex flex-col bg-black/40 backdrop-blur-lg rounded-2xl overflow-hidden mb-4">
         
         {/* TABS */}
-        <div className="flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm">
+        {/* <div className="flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm">
 
-          <button className="flex-1 bg-gradient-to-r from-blue-600 to-yellow-400 text-white rounded-full py-1 cursor-pointer">Match</button>
-          <button className="flex-1 text-gray-700 cursor-pointer">History</button>
-          <button className="flex-1 text-gray-700 cursor-pointer">Reward</button>
+          {
+            ["match", "history", "reward"].map(tab => (
+
+              <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 rounded-full py-1 capitalize transition 
+              ${activeTab === tab? "bg-gradient-to-r from-blue-600 to-yellow-400 text-white": "text-gray-700"}`}>
+                {tab}
+              </button>
+              
+          ))
+        }
+
+        </div> */}
+        <div className="relative flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm overflow-hidden">
+
+          <div className="absolute top-1 bottom-1 left-1 rounded-full bg-gradient-to-r from-blue-600 to-yellow-400 transition-all duration-300" 
+          style={{ width: `calc(100% / ${tabs.length} - 0.5rem)`,transform: `translateX(${activeIndex * 100}%)`,}}></div>
+
+          {/* Btns */}
+          {tabs.map((tab) => (
+            <button key={tab} onClick={()=> setActiveTab(tab)} className={`relative z-10 flex-1 rounded-full py-1 capitalize transition font-medium
+            ${activeTab === tab ? "text-white" : "text-gray-700"}`}>
+              {tab}
+            </button>
+          ))}
 
         </div>
 
-        {/* HEADER (Stay Fixed) */}
+
+
+        {/* HEADER */}
         <div className="mx-3 flex-shrink-0 rounded-xl bg-gradient-to-r from-blue-600 to-yellow-400 text-white text-center py-2 text-sm">
           Prediction Week - 9
         </div>
@@ -134,44 +209,57 @@ export default function Test3() {
           {/* MATCH LIST */}
           {/* <div className="flex-1 overflow-y-auto pr-2 space-y-4 scrollbar-thin scrollbar-thumb-white/20"> */}
           <div className="flex-1 overflow-y-auto scrollbars">
-            {matches.map((m, index) => (
-              <div key={index} onClick={()=>setSelectedMatch({ ...m, homeLogo: teamLogos[m.home],awayLogo: teamLogos[m.away],})}
-              className={`grid grid-cols-3 items-center text-white text-sm cursor-pointer transition
-              border-b p-4 border-white/30 ${ selectedMatch?.home === m.home && selectedMatch?.away === m.away? "bg-yellow-400/40": "hover:bg-gray-400/40"}`}>
-                
-                {/* HOME */}
-                <div className="flex items-center justify-between gap-2">
-                  <span className="truncate">{m.home}</span>
-                  <div className="w-6 h-6 flex-shrink-0"> 
-                    <img src={m.homeimg} alt="logo" className="w-full h-full object-contain" />
-                  </div>
-                </div>
+              
+            {matches.map((m, index) => {
 
-                {/* VS */}
-                <div className="text-center font-bold">VS</div>
+              const matchKey = `${m.home}_vs_${m.away}`;
+              const isBetted = bets[matchKey];
 
-                {/* AWAY */}
-                <div className="flex items-center justify-between gap-2">
-                  <div className="w-6 h-6 flex-shrink-0"> 
-                    <img src={m.awayimg} alt="logo" className="w-full h-full object-contain" />
-                  </div>
-                  <span className="truncate text-right">{m.away}</span>
-                </div>
-                
-              </div>
+              return(
+                <Match key={index} m={m} isBetted={isBetted} selectedMatch={selectedMatch} setSelectedMatch={setSelectedMatch} teamLogos={teamLogos} />
+              )
 
-            ))}
+            })}
           </div>
 
           {/* Play btn */}
-          <div className="flex-shrink-0 pt-2">
+          {/* <div className="flex-shrink-0 pt-2">
             <button disabled={!selectedMatch} onClick={()=> navigate("/betting", { state:selectedMatch })} 
             className={`w-full py-3 rounded-xl text-white font-bold transition ${selectedMatch
             ? "bg-gradient-to-r from-blue-600 to-yellow-400 text-white hover:brightness-110 active:scale-95"
             : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
               Play
             </button>
+          </div> */}
+
+
+          {/* <div className="flex-shrink-0 pt-2">
+            <button disabled={!selectedMatch} onClick={()=> {
+              const matchKey = `${selectedMatch.home}_vs_${selectedMatch.away}`;
+              const existingBet = bets[matchKey];
+
+              navigate("/betting", {
+                state: {
+                  ...selectedMatch,
+                  existingBet, 
+                },
+              });
+            }}
+            className={`w-full py-3 rounded-xl text-white font-bold transition ${selectedMatch ? "bg-gradient-to-r from-blue-600 to-yellow-400 text-white hover:brightness-110 active:scale-95"
+            : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
+              Play
+            </button>
+          </div> */}
+
+          <div className="flex-shrink-0 pt-2">
+            <button disabled={!selectedMatch} onClick={handlePlayClick}
+            className={`w-full py-3 rounded-xl text-white font-bold transition ${selectedMatch? "bg-gradient-to-r from-blue-600 to-yellow-400 hover:brightness-110 active:scale-95"
+            : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
+              Play
+            </button>
           </div>
+
+
 
         </div>
 

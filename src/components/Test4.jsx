@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
@@ -12,6 +12,36 @@ export default function BettingPage() {
 
   const { state } = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (state?.existingBet) {
+      setWinnerPrediction(state.existingBet.winnerPrediction);
+      setWhoScorerPrediction(state.existingBet.whoScorerPrediction);
+      setTotalScorerPrediction(state.existingBet.totalScorerPrediction);
+      setScorerPrediction(state.existingBet.scorerPrediction);
+    }
+  }, [state]);
+
+  const handleConfirm = ()=> {
+    const betData = {
+      matchKey: `${state.home}_vs_${state.away}`,
+      winnerPrediction,
+      whoScorerPrediction,
+      totalScorerPrediction,
+      scorerPrediction,
+    };
+  
+    // Get existing bets
+    const existingBets = JSON.parse(localStorage.getItem("bets")) || {};
+  
+    // Save / overwrite this match bet
+    existingBets[betData.matchKey] = betData;
+  
+    localStorage.setItem("bets", JSON.stringify(existingBets));
+  
+    // Go back
+    navigate(-1);
+  };
 
   if (!state) return <div>No match selected</div>;
 
@@ -76,48 +106,47 @@ export default function BettingPage() {
       </div>
 
       {/*  Match Detail  */}
-      <section className="relative z-10 px-4 pb-10 md:pb-20 md:px-12 flex flex-col h-[75%] max-w-xl mx-auto w-full mt-4">
+      <section className="relative z-10 px-4 pb-10 md:pb-12 md:px-12 flex flex-col flex-1 min-h-[70%] md:min-h-[70%] w-full mt-4">
       
         {/* The Main Container */}
-        <div className="flex flex-col h-full relative rounded-[2.5rem] border border-white/20 shadow-2xl overflow-hidden group">
+        <div className="flex flex-col h-full min-h-0 relative rounded-[2.5rem] border border-white/20 shadow-2xl overflow-hidden">
             
             <div className="absolute inset-0 backdrop-blur-2xl bg-black/40 pointer-events-none -z-10"></div>
 
-            {/* Header Area */}
-            <div className="relative z-20 w-full bg-white/10 backdrop-blur-md p-4 text-center border-b border-white/10">
-              <span className="text-white/90 text-sm font-bold tracking-widest uppercase">Correct Matches - Soon</span>
-            </div>
-
             {/* MATCH PREDICTION AREA */}
-            <div className="relative z-10 flex flex-col h-full min-h-0 p-6 space-y-8 overflow-y-auto scrollbars">
-            
-              {/* VS SECTION */}
-              <div className="w-full flex items-center justify-center gap-8 border-b border-white/10 pb-8">
+            <div className="flex flex-col md:flex-row flex-1 min-h-0">
                   
-                <div className="flex flex-col items-center gap-1 text-center w-24">
+                {/* LEFT SIDE (Teams) */}
+                <div className="md:w-[40%] flex flex-col md:items-center md:justify-center border-b md:border-b-0 md:border-r border-white/10 p-6">
+    
+                    {/* Header Area */}
+                    <div className="relative z-20 w-full bg-white/10 backdrop-blur-md p-2 text-center border-b border-white/10">
+                    <span className="text-white/90 text-sm font-bold tracking-widest uppercase">Correct Matches - Soon</span>
+                    </div>
 
-                  <div className="w-10">
-                    <img src={state.homeLogo || pieceballicon} alt={state.home} className="w-full h-full object-contain" />
-                  </div>
-                  <span className="text-xs font-bold text-white uppercase tracking-tight truncate w-full">{state.home}</span>
+                    <div className="md:sticky md:top-0 md:h-full w-full flex items-center justify-center gap-8">
+                      
+                    <div className="flex flex-col items-center gap-2 text-center">
+                        <img src={state.homeLogo || pieceballicon} className="w-16 h-16 object-contain" />
+                        <span className="text-white font-bold">{state.home}</span>
+                    </div>
+
+                    <span className="text-4xl font-black text-yellow-400">VS</span>
+
+                    <div className="flex flex-col items-center gap-2 text-center">
+                        <img src={state.awayLogo || pieceballicon} className="w-16 h-16 object-contain" />
+                        <span className="text-white font-bold">{state.away}</span>
+                    </div>
+
+                    </div>
 
                 </div>
 
-                <span className="text-3xl font-black italic text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]">VS</span>
 
-                <div className="flex flex-col items-center gap-1 text-center w-24">
-                  
-                  <div className="w-10">
-                    <img src={state.awayLogo || pieceballicon} alt={state.away} className="w-full h-full object-contain" />
-                  </div>
-                  <span className="text-xs font-bold text-white uppercase tracking-tight truncate w-full">{state.away}</span>
-                  
-                </div>
+                {/* RIGHT SIDE (Scrollable Betting Options) */}
+                <div className="md:w-[60%] flex flex-col overflow-y-auto p-6 space-y-8 scrollbars">
 
-              </div>
-              {/* VS SECTION */}
-
-              {/* WHO WILL WIN SECTION */}
+                    {/* WHO WILL WIN SECTION */}
               <div className="w-full flex flex-col gap-6">
 
                   <div className={`${sectionTitleGradient} p-[2px] rounded-full shadow-lg`}>
@@ -258,15 +287,20 @@ export default function BettingPage() {
               </div>
               {/* WHO WILL SCORE FIRST SECTION */}
 
+                </div>
+
             </div>
 
             {/* 3. Confirm BUTTON */}
-            <div className="relative z-20 flex-shrink-0 p-4 bg-black/20 backdrop-blur-md border-t border-white/10">
-                <button className="relative w-full text-center py-4 px-6 rounded-2xl group transition duration-300 active:scale-95 overflow-hidden cursor-pointer">
+            <div className="flex-shrink-0 p-4 bg-black/20 backdrop-blur-md border-t border-white/10">
+                <button onClick={handleConfirm} className="relative w-full text-center py-4 px-6 rounded-2xl group transition duration-300 active:scale-95 overflow-hidden cursor-pointer">
                     
-                    <div className={`${ruleButtonGradient} absolute inset-0 rounded-0 -z-10`}></div>
-                    {/* <div className="absolute top-0 left-0 h-full w-[30%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-30deg] animate-glimmer z-10"></div> */}
-                    <span className="relative z-30 text-white font-black text-2xl tracking-tighter uppercase italic drop-shadow-lg">Confirm Bet</span>
+                  <div className={`${ruleButtonGradient} absolute inset-0 rounded-0 -z-10`}></div>
+                  {/* <div className="absolute top-0 left-0 h-full w-[30%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-30deg] animate-glimmer z-10"></div> */}
+                  {/* <span className="relative z-30 text-white font-black text-2xl tracking-tighter uppercase italic drop-shadow-lg">Confirm Bet</span> */}
+                    <span className="relative z-30 text-white font-black text-2xl tracking-wide uppercase italic drop-shadow-lg">
+                      {state?.existingBet ? "Update Bet" : "Confirm Bet"}
+                    </span>
 
                 </button>
             </div>

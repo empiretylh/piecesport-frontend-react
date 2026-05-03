@@ -9,6 +9,7 @@ import FootballMatchPage from './components/FootballMatchPage.jsx'
 
 import BettingPage from "./pages/Bettingdetail.jsx";
 import Test3 from './components/Test3.jsx'
+import Test4 from './components/Test4.jsx'
 
 
 
@@ -23,7 +24,8 @@ function App() {
         {/* <Route path='/footballmatchpage' element={<FootballMatchPage/>} /> */}
         <Route path='/footballmatchpage' element={<Test3/>} />
         {/* <Route path="/betting" element={<BetPage />} /> */}
-        <Route path="/betting" element={<BettingPage />} />
+        {/* <Route path="/betting" element={<BettingPage />} /> */}
+        <Route path="/betting" element={<Test4 />} />
       </Routes>
     </>
   )
