@@ -264,9 +264,9 @@ export default function BettingPage() {
             <div className="relative z-20 flex-shrink-0 p-4 bg-black/20 backdrop-blur-md border-t border-white/10">
                 <button className="relative w-full text-center py-4 px-6 rounded-2xl group transition duration-300 active:scale-95 overflow-hidden cursor-pointer">
                     
-                    <div className={`${ruleButtonGradient} absolute inset-0 rounded-0 -z-10`}></div>
-                    {/* <div className="absolute top-0 left-0 h-full w-[30%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-30deg] animate-glimmer z-10"></div> */}
-                    <span className="relative z-30 text-white font-black text-2xl tracking-tighter uppercase italic drop-shadow-lg">Confirm Bet</span>
+                  <div className={`${ruleButtonGradient} absolute inset-0 rounded-0 -z-10`}></div>
+                  {/* <div className="absolute top-0 left-0 h-full w-[30%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-30deg] animate-glimmer z-10"></div> */}
+                  <span className="relative z-30 text-white font-black text-2xl tracking-tighter uppercase italic drop-shadow-lg">Confirm Bet</span>
 
                 </button>
             </div>

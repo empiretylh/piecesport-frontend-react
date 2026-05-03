@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import trophy from "../assets/img/welcomeImg/trophy.png";
@@ -8,11 +8,14 @@ import leftplayer from "../assets/img/welcomeImg/leftplayer.png";
 import rightplayer from "../assets/img/welcomeImg/rightplayer.png";
 
 import background1 from "../assets/img/welcomeImg/background1.png";
-
+import { ChevronDown, ShoppingCart } from "lucide-react";
 
 export default function WelcomePage() {
 
+  const [isOpen, setIsOpen] = useState(false);
   const [number, setNumber] = useState("");
+
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   const handlePlay = () => {
@@ -33,23 +36,53 @@ export default function WelcomePage() {
     navigate("/homepage"); 
   };
 
+  useEffect(()=> {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="relative w-full h-screen overflow-hidden flex flex-col bg-gradient-to-b from-teal-400 via-blue-500 to-yellow-400 flex flex-col items-center">
 
       <div className="flex flex-col items-center">
 
         {/* Dia Count  */}
-        <div className="absolute top-0 right-2 z-50 w-24 sm:w-52 md:w-64">
+        <div ref={dropdownRef} className="w-24 sm:w-52 md:w-64 absolute top-0 right-2 z-50">
         
-              <div className="min-h-[80px] bg-yellow-400 text-black font-bold flex flex-col items-center justify-start pt-1"
-                style={{
-                  clipPath: "polygon(0% 0%, 100% 0%, 100% 65%, 50% 100%, 0% 65%)"
-                }}
-              >
-                <div className="flex items-end gap-1 mt-3">
-                  💎
-                  <span className="text-sm sm:text-base">9999</span>
+              <div onClick={(e)=>{ e.stopPropagation();setIsOpen(prev=> !prev); }} className={`${ isOpen ? "h-[140px] sm:h-[160px]" : "h-[80px]" } 
+              bg-yellow-400 text-black font-bold flex flex-col items-center justify-start pt-1 transition-all duration-300 
+              ease-in-out overflow-hidden cursor-pointer`}
+              style={{
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 65%, 50% 100%, 0% 65%)"
+              }}>
+                <div className="flex flex-col items-center mt-2">
+
+                  <div className="flex items-end gap-1">
+                    💎<span className="text-sm sm:text-base">9999</span>
+                  </div>
+
+                  <div className={`transition-transform duration-300 ${ !isOpen && "animate-pulse hover:scale-155" } ${ isOpen ? "rotate-180" : "rotate-0" } active:scale-95`}>
+                    <ChevronDown className="w-6 h-6 shadow-lg shadow-yellow-300/50" />
+                  </div>
+
                 </div>
+
+                <div className={`flex items-center justify-center gap-2 mt-2 transition-all duration-300 ${ isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2" }`}>
+                  <ShoppingCart className="w-6 h-6 shadow-lg shadow-yellow-300/50"/>
+                  <button onClick={()=>setIsOpen(false)} className="bg-black text-white text-xs px-3 py-1 rounded-full">
+                    Shop
+                  </button>
+                </div>
+
               </div>
 
         </div>
@@ -60,14 +93,18 @@ export default function WelcomePage() {
           <img src={pieceballicon} alt="pieceballicon" />
         </div>
             
-        <div className="w-full flex items-center justify-evenly lg:justify-between  mt-[-15px]">
+        <div className="w-full flex items-center justify-center lg:justify-evenly">
 
-          <div className="mt-3 text-center">
-            <h3 className="text-blue-800 text-2xl sm:text-4xl font-bold drop-shadow-md my-Font">Weekly</h3>
-            <h2 className="text-yellow-300 text-4xl sm:text-6xl font-extrabold sugar-text">Challenge</h2>
+          <div className="text-center">
+            <h3 className="text-blue-800 text-2xl lg:text-3xl font-bold drop-shadow-md my-Font">Weekly</h3>
+            <h2 className="text-yellow-300 text-4xl lg:text-5xl font-extrabold sugar-text">Challenge</h2>
           </div>
 
-          <div className="w-1/3 z-10">
+          <div className="w-100 sm:w-2/3 md:w-1/2 max-w-[250px] md:max-w-[300px] animate-[scalePulse_1.5s_ease-in-out_infinite] hidden sm:block">
+            <img src={footballicon} alt="footballicon" className="w-full h-auto object-contain" />
+          </div>
+
+          <div className="w-1/3 sm:w-1/5 lg:w-1/4 z-10">
             <img src={trophy} alt="trophy" className="w-full h-auto object-contain"/>
           </div>
 
@@ -76,20 +113,19 @@ export default function WelcomePage() {
       </div>
 
       {/* Player Images Section */}
-      <div className="relative w-full flex justify-center mt-30 sm:mt-6">
+      <div className="relative w-full flex justify-center mt-10 sm:mt-6">
 
-        <img src={leftplayer} alt="left" className="absolute left-0 -bottom-38  w-24 sm:w-32 md:w-40 lg:w-46 z-10"/>
-        <img src={rightplayer} alt="right" className="absolute right-0 -bottom-38 w-24 sm:w-32 md:w-40 lg:w-46 z-10"/>
+        <img src={leftplayer} alt="left" className="absolute left-0 -bottom-14 sm:-bottom-12 w-24 sm:w-28 md:w-32 lg:w-38 z-10"/>
+        <div className="block sm:hidden">
+          <img src={footballicon} className="w-50 animate-[scalePulse_1.5s_ease-in-out_infinite]" />
+        </div>
+        <img src={rightplayer} alt="right" className="absolute right-0 -bottom-14 sm:-bottom-12 w-24 sm:w-28 md:w-32 lg:w-38 z-10"/>
 
       </div>
+      {/* Player Images Section */}
 
-
-      {/* Banner */}
-      <div className="w-100 sm:w-2/3 md:w-1/2 max-w-[250px] sm:max-w-[300px] -translate-y-12 z-10 animate-[scalePulse_1.5s_ease-in-out_infinite]">
-        <img src={footballicon} alt="footballicon" className="w-full h-auto object-contain" />
-      </div>
-
-      <div className="relative w-full">
+      {/* Bars */}
+      <div className="relative w-full mt-14">
 
         <span className="absolute w-full h-5 bg-yellow-300 sm:-translate-y-12"></span>
         <span className="absolute w-full h-2 bg-blue-600 translate-y-7 sm:-translate-y-5"></span>
@@ -101,12 +137,11 @@ export default function WelcomePage() {
         </div>
 
       </div>
-
+      {/* Banner */}        
 
       {/* Bottom Section */}
-      <div className="w-full flex flex-col flex-1 items-center justify-end gap-4 py-10 bg-no-repeat bg-cover bg-bottom"
-        style={{ backgroundImage: `url(${background1})` }}
-      >
+      <div className="w-full flex flex-col flex-1 items-center justify-center gap-4 py-10 bg-no-repeat bg-cover bg-bottom"
+      style={{ backgroundImage: `url(${background1})`}}>
 
         <div className="flex items-center bg-black rounded-full px-4 py-2">
           <span className="text-white text-sm mr-2">MPT No :</span>
