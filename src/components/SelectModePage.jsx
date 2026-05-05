@@ -42,9 +42,7 @@ export default function SelectModePage() {
         {/* Title */}
         <div className="w-full text-center">
 
-          <h1 className="text-3xl md:text-5xl text-center font-extrabold tracking-wider mt-1 sm:mt-2 font-[Sekuya]">
-            SELECT GAME
-          </h1>
+          <h1 className="text-3xl md:text-5xl text-center font-extrabold tracking-wider mt-1 sm:mt-2 font-[Sekuya]">SELECT GAME</h1>
           <img src={titlebmbar} alt="titlebmbar" className="w-full h-4 object-contain" />
 
         </div>
@@ -55,7 +53,7 @@ export default function SelectModePage() {
           {/* Football Block */}
           <div className="flex flex-col items-center gap-6 transition hover:-translate-y-2">
 
-            <img src={footballchar} alt="football" className="w-40 h-40 sm:w-80 sm:h-80 object-contain" />
+            <img onClick={goFootball} src={footballchar} alt="football" className="w-40 h-40 sm:w-80 sm:h-80 object-contain animate-[scalePulse_1.5s_ease-in-out_infinite]" />
 
             <div className="relative w-fit group hover:scale-105 transition">
               

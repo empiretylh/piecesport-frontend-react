@@ -1,171 +1,416 @@
-import React from 'react';
+import { React, useState, useEffect, useRef } from "react";
+import { ArrowLeft, ChevronDown, ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-// Sample match data. You can expand this.
-const matches = [
-  { home: "Crystal Palace", homeLog: "🦅", guest: "Liverpool", guestLog: "🔴" },
-  { home: "Arsenal", homeLog: "🔫", guest: "Southampton", guestLog: "⚪" },
-  { home: "Brentford", homeLog: "🐝", guest: "Wolves", guestLog: "🐺" },
-  { home: "Leicester", homeLog: "🦊", guest: "Bournemouth", guestLog: "🍒" },
-  { home: "Man City", homeLog: "🏙️", guest: "Fulham", guestLog: "🎩" },
-  { home: "Leganes", homeLog: "🛡️", guest: "Valencia", guestLog: "🦇" },
-  { home: "Union Berlin", homeLog: "🐻", guest: "Dortmund", guestLog: "🐝" },
-  { home: "Marseille", homeLog: "⚓", guest: "Angers", guestLog: "⚫" },
-];
+import pieceballicon from "../assets/img/welcomeImg/pieceballicon.png";
+import titleone from "../assets/img/footballmatchimg/titleone.png";
+import titletwo from "../assets/img/footballmatchimg/titletwo.png";
+import titlethree from "../assets/img/footballmatchimg/titlethree.png";
+import titlefour from "../assets/img/footballmatchimg/titlefour.png";
 
-const FootballMatchPage = () => {
+import liverpool from "../assets/img/footballmatchimg/liverpool.png";
+import palace from "../assets/img/footballmatchimg/palace.png";
+import arsenal from "../assets/img/footballmatchimg/arsenal.png";
+import south from "../assets/img/footballmatchimg/south.png";
+import brent from "../assets/img/footballmatchimg/brent.png";
+import manu from "../assets/img/footballmatchimg/manu.png";
+
+
+
+// const matches = [
+//   { home: "Crystal Palace", away: "Liverpool", homeimg: palace , awayimg: liverpool },
+//   { home: "Arsenal", away: "Southampton", homeimg: arsenal , awayimg: south },
+//   { home: "Brentford", away: "Man Utd", homeimg: brent , awayimg: manu },
+//   { home: "Leicester", away: "Bournemouth", homeimg: palace , awayimg: liverpool },
+//   { home: "Man City", away: "Fulham", homeimg: palace , awayimg: liverpool },
+//   { home: "Leganes", away: "Valencia", homeimg: palace , awayimg: liverpool },
+//   { home: "Union Berlin", away: "Dortmund", homeimg: palace , awayimg: liverpool },
+//   { home: "Marseille", away: "Angers", homeimg: palace , awayimg: liverpool },
+//   { home: "Marseille", away: "Angers", homeimg: palace , awayimg: liverpool },
+//   { home: "Marseille", away: "Angers", homeimg: palace , awayimg: liverpool },
+//   { home: "Marseille", away: "Angers", homeimg: palace , awayimg: liverpool },
+//   { home: "Marseille", away: "Angers", homeimg: palace , awayimg: liverpool },
+// ];
+
+// const teamLogos = {
+//   "Liverpool": liverpool,
+//   "Crystal Palace": palace,
+//   "Arsenal": arsenal,
+//   "Southampton": south,
+//   "Brentford": brent,
+//   "Man Utd": manu
+// };
+
+export default function Test3() {
+
+  const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+
+  const backArrowClick = ()=> navigate("/selectmode");  
+
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [activeTab, setActiveTab] = useState("match");
+  const [bets, setBets] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [matches, setMatches] = useState([]);
+
+  const tabs = ["match", "history", "reward"];
+  const activeIndex = tabs.indexOf(activeTab);
+
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const token = localStorage.getItem("token"); 
+
+        setLoading(true);
+
+        const res = await fetch("https://ps-api-stg.illuminati.com.mm/matches", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch matches");
+        }
+        
+        const data = await res.json();
+
+        console.log(data);
+
+        setMatches(data.data); 
+        setLoading(false);
+        
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
+    };
+
+    fetchMatches();
+  }, []);
+
+  
+  useEffect(() => {
+    const storedbets = JSON.parse(localStorage.getItem("bets")) || {};
+    setBets(storedbets);
+  }, []);
+
+  useEffect(()=> {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+
+  function Match({ m, isBetted, selectedMatch, setSelectedMatch }){
+    return (
+
+      <div onClick={()=> setSelectedMatch(m)} className={`grid grid-cols-3 items-center text-white text-sm cursor-pointer transition 
+      border-b p-4 border-white/30 ${ isBetted ? "bg-green-400/40" : selectedMatch?.home === m.home && selectedMatch?.away === m.away ? 
+      "bg-yellow-400/40" : "hover:bg-gray-400/40"}`}>
+
+        {/* Home */}
+        <div className="flex items-center justify-between gap-2">
+          <span className="truncate">{m.home}</span>
+          <img src={m.homeimg} className="w-6 h-6" />
+        </div>
+
+        <div className="text-center font-bold">VS</div>
+
+        {/* Away */}
+        <div className="flex items-center justify-between gap-2">
+          <img src={m.awayimg} className="w-6 h-6" />
+          <span className="truncate text-right">{m.away}</span>
+        </div>
+
+      </div>
+      
+    );
+  }
+
+  // const handlePlayClick = () => {
+
+  //   if (!selectedMatch) return;
+
+  //   const matchKey = `${selectedMatch.home}_vs_${selectedMatch.away}`;
+  //   const existingBet = bets[matchKey];
+
+  //   navigate("/betting", {
+  //     state: {
+  //       ...selectedMatch,
+  //       existingBet,
+  //     },
+  //   });
+
+  // };
+  const handlePlayClick = () => {
+    if (!selectedMatch) return;
+    setShowConfirm(true);
+  };
+
+  const handleConfirm = () => {
+    const matchKey = `${selectedMatch.home}_vs_${selectedMatch.away}`;
+    const existingBet = bets[matchKey];
+
+    setShowConfirm(false);
+
+    navigate("/betting", {
+      state: {
+        ...selectedMatch,
+        existingBet,
+      },
+    });
+  };
+
+  const handleCancel = () => {
+    setShowConfirm(false);
+  };
+
+  const getBetCost = () => {
+    if (!selectedMatch) return 0;
+
+    const matchKey = `${selectedMatch.home}_vs_${selectedMatch.away}`;
+    return bets[matchKey] ? 100 : 1000; 
+  };
+
   return (
-    // MAIN CONTAINER: Full viewport height, no vertical scroll, complex background gradient
-    <div 
-      className="h-screen w-full flex flex-col font-sans overflow-hidden" 
-      style={{
-        background: `
-          linear-gradient(135deg, #4299E1 0%, #3182CE 20%, #48BB78 40%, #ECC94B 60%, #4299E1 80%, #3182CE 100%),
-          #3182CE`
-      }}
-    >
-      {/* Background Sparkle Effect (Absolute positioned behind content) */}
-      <div className="absolute inset-0 z-0 opacity-40 animate-spin-slow flex items-center justify-center pointer-events-none">
-        <span className="text-white text-[15vw] font-bold">✨</span>
+    <div className="h-screen w-full overflow-hidden bg-gradient-to-br from-slate-400 via-blue-400 to-amber-400 flex flex-col items-center justify-between p-3">
+
+      {/* Back Btn  */}
+      <div className="w-full flex items-center justify-between px-6 py-2 z-10">
+              
+        <button onClick={backArrowClick} className="bg-gray-600/50 p-2 rounded-md cursor-pointer transition hover:bg-gray-400/60 hover:scale-110">
+          <ArrowLeft size={20} />
+        </button>
+              
+      </div>
+      {/* Back Btn  */}
+
+      {/* TOP BAR */}
+      <div className="w-full flex items-center justify-center select-none">
+
+        {/* Title logo */}
+        <div className="flex items-center justify-center -mt-8">
+          <img src={pieceballicon} alt="pieceballicon" className="md:w-46 md:h-auto" />
+        </div>
+
+        {/* DIAMOND */}
+        <div ref={dropdownRef} className="w-24 sm:w-52 md:w-64 absolute top-0 right-2 z-50">
+        
+          <div onClick={(e)=>{ e.stopPropagation();setIsOpen(prev=> !prev); }} className={`${ isOpen ? "h-[140px] sm:h-[160px]" : "h-[80px]" } 
+          bg-yellow-400 text-black font-bold flex flex-col items-center justify-start pt-1 transition-all duration-300 
+          ease-in-out overflow-hidden cursor-pointer`}
+          style={{
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 65%, 50% 100%, 0% 65%)"
+          }}>
+            <div className="flex flex-col items-center mt-2">
+
+              <div className="flex items-end gap-1">
+                💎<span className="text-sm sm:text-base">9999</span>
+              </div>
+
+              <div className={`transition-transform duration-300 ${ !isOpen && "animate-pulse hover:scale-155" } ${ isOpen ? "rotate-180" : "rotate-0" } active:scale-95`}>
+                <ChevronDown className="w-6 h-6 shadow-lg shadow-yellow-300/50" />
+              </div>
+
+            </div>
+
+            <div className={`flex items-center justify-center gap-2 mt-2 transition-all duration-300 ${ isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2" }`}>
+              <ShoppingCart className="w-6 h-6 shadow-lg shadow-yellow-300/50"/>
+              <button onClick={()=>setIsOpen(false)} className="bg-black text-white text-xs px-3 py-1 rounded-full">
+                Shop
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+        {/* DIAMOND  */}
+
       </div>
 
-      {/* ================= HEADER SECTION (Fixed Height) ================= */}
-      <header className="relative z-10 p-4 sm:p-6 flex flex-col items-center gap-6">
-        {/* Top Row: Back button & Diamond count */}
-        <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
-          {/* PLACEHOLDER: Back Button Img */}
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 border-white/30 border rounded-lg flex items-center justify-center cursor-pointer hover:bg-white/30 transition">
-            <span className="text-white text-xl">←</span>
-          </div>
-          
-          {/* Diamond Counter (Scaled visually based on screenshot) */}
-          <div className="relative group cursor-pointer">
-            <div className="bg-yellow-400 p-[2px] rounded-lg transition duration-300 group-hover:scale-105 group-hover:shadow-[0_0_15px_#fbbf24]">
-              <div className="bg-black border border-gray-600 px-4 py-2 rounded-lg flex items-center gap-2">
-                <span className="text-2xl">💎</span>
-                <span className="text-xl sm:text-2xl font-bold text-white tracking-tight">99999</span>
-              </div>
-            </div>
-          </div>
+
+      {/* TITLE + BADGES */}
+      <div className="flex flex-col items-center gap-4 w-full select-none">
+
+        {/* TITLE IMAGE */}
+        <div className="w-full max-w-md h-16 flex items-center justify-center -mt-4 block sm:hidden">
+          <img src={titleone} alt="chatchinpouk" className="animate-[scalePulse_1.5s_ease-in-out_infinite]" />
         </div>
 
-        {/* PLACEHOLDER: Main Logo Img ('PIECES BALL') */}
-        <div className="w-3/4 sm:w-1/2 md:w-1/3 lg:w-[400px] h-20 sm:h-24 md:h-28 bg-white/10 border-white/20 border-4 border-dashed rounded-xl flex items-center justify-center">
-          <span className="text-white/70 font-mono text-sm uppercase tracking-wider p-4">Main Logo Placeholder</span>
-        </div>
-      </header>
-
-      {/* ================= TROPHY SECTION (Scalable Height) ================= */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col flex-grow min-h-0">
-        
-        {/* PLACEHOLDER: Large Burmese Text Img */}
-        <div className="w-full text-center p-4">
-          <div className="w-[90%] sm:w-[80%] md:w-[60%] h-14 sm:h-20 bg-white/10 border-white/20 border-2 border-dashed rounded-lg mx-auto flex items-center justify-center">
-            <span className="text-white/70 font-mono text-xs p-2">Burmese Text Placeholder</span>
-          </div>
-        </div>
-
-        {/* Trophies Row: Responsive width and spacing */}
-        <div className="w-full flex justify-center gap-4 sm:gap-10 p-4 max-w-5xl mx-auto flex-grow items-center">
-          {[1, 2, 3].map((_, index) => (
-            <div key={index} className="flex-1 max-w-[200px] aspect-[1/1.2] relative group">
-              {/* Complex clipped shape (similar to SUV logic) */}
-              <div 
-                className="absolute inset-0 bg-yellow-400 p-[2.5px] transition duration-300 group-hover:shadow-[0_0_20px_#fbbf24] group-hover:-translate-y-1"
-                style={{ clipPath: "polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%)" }}
-              >
-                {/* PLACEHOLDER: Trophy Img */}
-                <div 
-                  className="w-full h-full bg-black border border-gray-600 flex flex-col items-center justify-center p-2 text-center"
-                  style={{ clipPath: "polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%)" }}
-                >
-                  <span className="text-white/70 font-mono text-xs uppercase p-2">Trophy {index+1}</span>
-                </div>
-              </div>
+        {/* BADGES */}
+        <div className="flex md:gap-20 justify-center sm:mb-6">
+          {[titletwo, titlethree, titlefour].map((i) => (
+            <div key={i} className="w-40 h-20 md:w-40 md:h-20 flex items-center justify-center sm:-mt-6">
+              <img src={i} alt={i} className="md:w-50 md:h-40 sm:animate-[scalePulse_1.5s_ease-in-out_infinite]" />
             </div>
           ))}
         </div>
+
       </div>
-
-      {/* ================= MAIN INTERFACE PANEL (Fixed Height, scroll-y within) ================= */}
-      <section className="w-full flex-shrink-0 z-10 px-4 sm:px-6 md:px-12 pb-4 sm:pb-6 relative flex flex-col h-[55%] sm:h-[60%] md:h-[65%]">
+      
+      {/* MATCH CARD */}
+      <div className="w-full max-w-xl flex-1 flex flex-col bg-black/40 backdrop-blur-lg rounded-2xl overflow-hidden mb-4">
         
-        {/* The 'Play' button gradient repeated here for the full panel border effect */}
-        <div className="bg-gradient-to-r from-blue-700 to-yellow-500 p-[1.5px] rounded-2xl flex flex-col h-full shadow-2xl relative overflow-hidden transition hover:-translate-y-1 hover:shadow-cyan-400/50 hover:shadow-yellow-400/50 hover:shadow-2xl hover:shadow-[0_15px_30px_rgba(34,211,238,0.25)]">
-          <div className="absolute inset-0 backdrop-blur-md bg-white/10 rounded-2xl pointer-events-none"></div>
+        {/* TABS */}
+        {/* <div className="flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm">
 
-          {/* 1. Top Navbar (Tab list) */}
-          <nav className="relative z-20 w-full bg-white/20 p-2 sm:p-3 rounded-t-2xl flex justify-around items-center border-b border-white/10">
-            {['Match', 'History', 'Reward'].map(tab => (
-              <button 
-                key={tab} 
-                className={`relative flex-1 text-center py-2 sm:py-3 px-2 rounded-lg font-semibold text-lg sm:text-xl md:text-2xl transition duration-300 ${tab === 'Match' ? 'text-white' : 'text-white/60 hover:text-white'}`}
-              >
-                {tab === 'Match' && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-yellow-500 rounded-lg -z-10 shadow-md"></div>
-                )}
+          {
+            ["match", "history", "reward"].map(tab => (
+
+              <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 rounded-full py-1 capitalize transition 
+              ${activeTab === tab? "bg-gradient-to-r from-blue-600 to-yellow-400 text-white": "text-gray-700"}`}>
                 {tab}
               </button>
-            ))}
-          </nav>
+              
+          ))
+        }
 
-          {/* 2. Match Prediction Panel: Scrollable Content Area */}
-          <div className="relative z-10 flex flex-col h-full min-h-0 bg-white/5 backdrop-blur-sm p-4 sm:p-5">
-            {/* Week Label (Centered across list) */}
-            <div className="text-center pb-4 text-white/90 text-sm sm:text-base font-medium tracking-wide uppercase">
-              Prediction Week - 9
-            </div>
+        </div> */}
+        <div className="relative flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm overflow-hidden">
 
-            {/* MATCH LIST: The only scrollable area */}
-            <div className="flex-1 overflow-y-auto space-y-4 pr-1 sm:pr-2 scrollbar-thin scrollbar-thumb-white/30 scrollbar-track-transparent">
-              {matches.map((match, index) => (
-                <article key={index} className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 border-b border-white/10 pb-4 last:border-0 hover:bg-white/5 rounded-xl transition cursor-pointer p-2 sm:p-3">
-                  {/* Home Team */}
-                  <div className="flex items-center gap-2 flex-1 justify-end">
-                    <span className="text-xl sm:text-2xl">{match.homeLog}</span>
-                    <span className="text-lg sm:text-xl font-medium text-white truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">{match.home}</span>
-                  </div>
-                  
-                  {/* VS Divider */}
-                  <span className="text-xl sm:text-2xl font-bold text-yellow-400 whitespace-nowrap">VS</span>
-                  
-                  {/* Guest Team */}
-                  <div className="flex items-center gap-2 flex-1 justify-start">
-                    <span className="text-xl sm:text-2xl">{match.guestLog}</span>
-                    <span className="text-lg sm:text-xl font-medium text-white truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">{match.guest}</span>
-                  </div>
-                </article>
-              ))}
-            </div>
+          <div className="absolute top-1 bottom-1 left-1 rounded-full bg-gradient-to-r from-blue-600 to-yellow-400 transition-all duration-300" 
+          style={{ width: `calc(100% / ${tabs.length} - 0.5rem)`,transform: `translateX(${activeIndex * 100}%)`,}}></div>
 
-            {/* 3. The Large 'Play' Button (Bottom Fixed) */}
-            <div className="pt-5 sm:pt-6">
-              <button className="relative w-full text-center py-4 sm:py-5 px-6 rounded-2xl group transition duration-300 active:scale-95">
-                {/* Gradient background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-700 via-blue-600 to-yellow-500 rounded-2xl -z-10 group-hover:scale-105 transition duration-300"></div>
-                {/* Glimmer effect (Z-index 20) */}
-                <div className="absolute top-0 left-0 h-full w-[20%] bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[-30deg] animate-glimmer z-20 group-hover:scale-x-125 transition"></div>
-                {/* Glow effect */}
-                <div className="absolute inset-0 rounded-2xl shadow-[0_0_20px_#fbbf24] opacity-50 group-hover:opacity-80 transition duration-300 pointer-events-none"></div>
-                
-                {/* Text Content */}
-                <span className="relative z-30 text-white font-extrabold text-3xl sm:text-4xl tracking-tighter uppercase drop-shadow-md">
-                  Play Now
-                </span>
-              </button>
-            </div>
+          {/* Btns */}
+          {tabs.map((tab) => (
+            <button key={tab} onClick={()=> setActiveTab(tab)} className={`relative z-10 flex-1 rounded-full py-1 capitalize transition font-medium
+            ${activeTab === tab ? "text-white" : "text-gray-700"}`}>
+              {tab}
+            </button>
+          ))}
+
+        </div>
+
+
+
+        {/* HEADER */}
+        <div className="mx-3 flex-shrink-0 rounded-xl bg-gradient-to-r from-blue-600 to-yellow-400 text-white text-center py-2 text-sm">Prediction Week - 9</div>
+
+        {/* MATCH CONTENT AREA */}
+        <div className="flex-1 flex flex-col min-h-0 px-3 py-2">
+
+          {/* MATCH LIST */}
+          {/* <div className="flex-1 overflow-y-auto pr-2 space-y-4 scrollbar-thin scrollbar-thumb-white/20"> */}
+          <div className="flex-1 overflow-y-auto scrollbars">
+              
+            {loading ? (
+              <div className="text-white text-center py-4">Loading matches...</div>
+            ) : (
+              matches.map((m, index) => {
+
+                const matchKey = `${m.team1_name}_vs_${m.team2_name}`;
+                const isBetted = bets[matchKey];
+
+                return(
+                  <Match key={index} m={{
+                    id: m.id,
+                    home: m.team1_name,
+                    away: m.team2_name,
+                    homeimg: m.team1_logo,
+                    awayimg: m.team2_logo
+                  }} isBetted={isBetted} selectedMatch={selectedMatch} setSelectedMatch={setSelectedMatch} />
+                )
+
+              })
+            )}
+
           </div>
-        </div>
-      </section>
 
-      {/* FOOTER AREA (Placeholder) */}
-      <footer className="relative z-10 w-full p-4 flex justify-center flex-shrink-0">
-        {/* Placeholder: Confetti/Stars (as requested) */}
-        <div className="w-[80%] h-8 bg-white/10 border-white/20 border-2 border-dashed rounded-full flex items-center justify-center opacity-70">
-          <span className="text-white/70 font-mono text-[10px] uppercase">Confetti/Background FX Placeholder</span>
+          {/* Play btn */}
+          {/* <div className="flex-shrink-0 pt-2">
+            <button disabled={!selectedMatch} onClick={()=> navigate("/betting", { state:selectedMatch })} 
+            className={`w-full py-3 rounded-xl text-white font-bold transition ${selectedMatch
+            ? "bg-gradient-to-r from-blue-600 to-yellow-400 text-white hover:brightness-110 active:scale-95"
+            : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
+              Play
+            </button>
+          </div> */}
+
+
+          {/* <div className="flex-shrink-0 pt-2">
+            <button disabled={!selectedMatch} onClick={()=> {
+              const matchKey = `${selectedMatch.home}_vs_${selectedMatch.away}`;
+              const existingBet = bets[matchKey];
+
+              navigate("/betting", {
+                state: {
+                  ...selectedMatch,
+                  existingBet, 
+                },
+              });
+            }}
+            className={`w-full py-3 rounded-xl text-white font-bold transition ${selectedMatch ? "bg-gradient-to-r from-blue-600 to-yellow-400 text-white hover:brightness-110 active:scale-95"
+            : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
+              Play
+            </button>
+          </div> */}
+
+          <div className="flex-shrink-0 pt-2">
+            <button disabled={!selectedMatch} onClick={handlePlayClick}
+            className={`w-full py-3 rounded-xl text-white font-bold transition ${selectedMatch? "bg-gradient-to-r from-blue-600 to-yellow-400 hover:brightness-110 active:scale-95"
+            : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
+              Play
+            </button>
+          </div>
+
+
+
         </div>
-      </footer>
+
+      </div>
+
+
+{showConfirm && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[999] ">
+
+    <div className="bg-gray-900 text-white rounded-2xl w-[85%] max-w-sm p-6 relative text-center animate-[scaleIn_0.2s_ease-out]">
+
+      {/* BIG ICON */}
+      <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-yellow-400 text-black w-20 h-20 rounded-full flex items-center justify-center text-3xl shadow-lg">
+        {/* 💰 */}
+        💎
+      </div>
+
+      {/* TITLE */}
+      <h2 className="mt-12 text-lg font-bold">
+        {getBetCost()} coins will cost
+      </h2>
+
+      {/* DESC Text */}
+      <p className="text-sm text-gray-300 mt-2">
+        {getBetCost() === 100 ? "Editing your bet will cost less" : "Placing a new bet"}
+      </p>
+
+      {/* BUTTONS */}
+      <div className="flex gap-3 mt-6">
+        <button onClick={handleCancel} className="flex-1 py-2 rounded-lg bg-gray-600 hover:bg-gray-500 transition">
+          Decline
+        </button>
+
+        <button onClick={handleConfirm} className="flex-1 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-yellow-400 text-white font-bold hover:brightness-110 transition" >
+          Continue
+        </button>
+      </div>
+
     </div>
-  );
-};
+  </div>
+)}
 
-export default FootballMatchPage;
+
+    </div>
+
+    
+  );
+}

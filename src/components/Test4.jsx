@@ -120,8 +120,8 @@ export default function BettingPage() {
                 <div className="md:w-[40%] flex flex-col md:items-center md:justify-center border-b md:border-b-0 md:border-r border-white/10 p-6">
     
                     {/* Header Area */}
-                    <div className="relative z-20 w-full bg-white/10 backdrop-blur-md p-2 text-center border-b border-white/10">
-                    <span className="text-white/90 text-sm font-bold tracking-widest uppercase">Correct Matches - Soon</span>
+                    <div className="relative z-20 w-full bg-white/10 backdrop-blur-md p-2 mb-4 md:mb-0 text-center border-b border-white/10">
+                      <span className="text-white/90 text-sm font-bold tracking-widest uppercase">Correct Matches - Soon</span>
                     </div>
 
                     <div className="md:sticky md:top-0 md:h-full w-full flex items-center justify-center gap-8">
@@ -146,146 +146,77 @@ export default function BettingPage() {
                 {/* RIGHT SIDE (Scrollable Betting Options) */}
                 <div className="md:w-[60%] flex flex-col overflow-y-auto p-6 space-y-8 scrollbars">
 
-                    {/* WHO WILL WIN SECTION */}
-              <div className="w-full flex flex-col gap-6">
+                  {/* WHO WILL WIN SECTION */}
+                  <div className="w-full flex flex-col gap-6">
 
-                  <div className={`${sectionTitleGradient} p-[2px] rounded-full shadow-lg`}>
-                    <div className="bg-black/20 backdrop-blur-sm text-center py-2 px-6 rounded-full">
-                      <span className="text-white font-black text-xl tracking-tighter uppercase italic">Who will win?</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 px-2">
-                  {[
-                      { label: "Draw", value: "draw" },
-                      { label: state.home, value: "home" },
-                      { label: state.away, value: "away" },
-                  ].map(option => (
-                      <label key={option.value} className={`flex items-center justify-between gap-4 cursor-pointer p-3 rounded-2xl transition-all border ${winnerPrediction === option.value ? 'bg-white/20 border-white/40 shadow-lg' : 'bg-transparent border-transparent hover:bg-white/5'}`}>
-                        
-                        <div className="flex items-center gap-4">
-
-                          <input type="radio" name="winnerPrediction" value={option.value} checked={winnerPrediction === option.value}
-                          onChange={()=> setWinnerPrediction(option.value)}
-                          className="w-5 h-5 accent-yellow-400 cursor-pointer scale-125"
-                          />
-                          <span className={`text-lg font-bold ${winnerPrediction === option.value ? 'text-yellow-400' : 'text-white'}`}>{option.label}</span>
-                        
+                      <div className={`${sectionTitleGradient} p-[2px] rounded-full shadow-lg`}>
+                        <div className="bg-black/20 backdrop-blur-sm text-center py-2 px-6 rounded-full">
+                          <span className="text-white font-black text-xl tracking-tighter uppercase italic">Who will win?</span>
                         </div>
-
-                        <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">သင့်အဖြေ</span>
-
-                      </label>
-                  ))}
-                  </div>
-              </div>
-              {/* WHO WILL WIN SECTION */}
-
-              {/* Both Team To Score */}
-              <div className="w-full flex flex-col gap-6">
-
-                  <div className={`${sectionTitleGradient} p-[2px] rounded-full shadow-lg`}>
-                    <div className="bg-black/20 backdrop-blur-sm text-center py-2 px-6 rounded-full">
-                        <span className="text-white font-black text-xl tracking-tighter uppercase italic">Both Team To Score ?</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 px-2">
-                  {[
-                    { label: "Yes", value: "yes" },
-                    { label: "No", value: "no" },
-                  ].map(option => (
-                      <label key={option.value} className={`flex items-center justify-between gap-4 cursor-pointer p-3 rounded-2xl transition-all border ${whoScorerPrediction === option.value ? 'bg-white/20 border-white/40 shadow-lg' : 'bg-transparent border-transparent hover:bg-white/5'}`}>
-                        
-                        <div className="flex items-center gap-4">
-                            <input type="radio" name="scorerPrediction" value={option.value} checked={whoScorerPrediction === option.value}
-                            onChange={()=> setWhoScorerPrediction(option.value)}
-                            className="w-5 h-5 accent-yellow-400 cursor-pointer scale-125"
-                            />
-                            <span className={`text-lg font-bold ${whoScorerPrediction === option.value ? 'text-yellow-400' : 'text-white'}`}>{option.label}</span>
-                        </div>
-                        <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">သင့်အဖြေ</span>
-                        
-                      </label>
-                  ))}
-                  </div>
-              </div>
-              {/* Both Team To Score */}
-
-              {/* Total Goal Score Over/Under */}
-              <div className="w-full flex flex-col gap-6">
-
-                <div className={`${sectionTitleGradient} p-[2px] rounded-full shadow-lg`}>
-                  <div className="bg-black/20 backdrop-blur-sm text-center py-2 px-6 rounded-full">
-                    <span className="text-white font-black text-xl tracking-tighter uppercase italic">Total Goals Score Over/Under ?</span>
-                  </div>
-                </div>
-
-                <div className="space-y-2 px-2">
-                  {[
-                    { label: "Over +1.5", value: "over1.5" },
-                    { label: "Under -1.5", value: "under1.5" },
-                    { label: "Over +2.5", value: "over2.5" },
-                    { label: "Under -2.5", value: "under2.5" },
-                    { label: "Over +3.5", value: "over3.5" },
-                    { label: "Under -3.5", value: "under3.5" },
-                    { label: "Over +4.5", value: "over4.5" },
-                    { label: "Under -4.5", value: "under4.5" },
-                  ].map(option => (
-                    <label key={option.value} className={`flex items-center justify-between gap-4 cursor-pointer p-3 rounded-2xl transition-all border ${totalScorerPrediction === option.value ? 'bg-white/20 border-white/40 shadow-lg' : 'bg-transparent border-transparent hover:bg-white/5'}`}>
-                        
-                      <div className="flex items-center gap-4">
-                        <input type="radio" name="totalgoalscore" value={option.value} checked={totalScorerPrediction === option.value}
-                        onChange={()=> setTotalScorerPrediction(option.value)}
-                        className="w-5 h-5 accent-yellow-400 cursor-pointer scale-125"
-                        />
-                        <span className={`text-lg font-bold ${totalScorerPrediction === option.value ? 'text-yellow-400' : 'text-white'}`}>{option.label}</span>
                       </div>
-                      <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">သင့်အဖြေ</span>
-                        
-                    </label>
-                  ))}
-                </div>
 
-              </div>
-              {/* Total Goal Score Over/Under */}
+                      <div className="space-y-2 px-2">
+                      {[
+                          { label: "Draw", value: "draw" },
+                          { label: state.home, value: "home" },
+                          { label: state.away, value: "away" },
+                      ].map(option => (
+                          <label key={option.value} className={`flex items-center justify-between gap-4 cursor-pointer p-3 rounded-2xl transition-all border ${winnerPrediction === option.value ? 'bg-white/20 border-white/40 shadow-lg' : 'bg-transparent border-transparent hover:bg-white/5'}`}>
+                            
+                            <div className="flex items-center gap-4">
 
-              {/* WHO WILL SCORE FIRST SECTION */}
-              <div className="w-full flex flex-col gap-6">
-
-                  <div className={`${sectionTitleGradient} p-[2px] rounded-full shadow-lg`}>
-
-                    <div className="bg-black/20 backdrop-blur-sm text-center py-2 px-6 rounded-full">
-                        <span className="text-white font-black text-xl tracking-tighter uppercase italic">
-                        Who will score first?
-                        </span>
-                    </div>
-
-                  </div>
-
-                  <div className="space-y-2 px-2">
-                    {[
-                        { label: "None", value: "none" },
-                        { label: state.home, value: "home" },
-                        { label: state.away, value: "away" },
-                    ].map(option => (
-                        <label key={option.value} className={`flex items-center justify-between gap-4 cursor-pointer p-3 rounded-2xl transition-all border ${scorerPrediction === option.value ? 'bg-white/20 border-white/40 shadow-lg' : 'bg-transparent border-transparent hover:bg-white/5'}`}>
-                          
-                          <div className="flex items-center gap-4">
-                              <input type="radio" name="scorefirst" value={option.value} checked={scorerPrediction === option.value}
-                              onChange={() => setScorerPrediction(option.value)}
+                              <input type="radio" name="winnerPrediction" value={option.value} checked={winnerPrediction === option.value}
+                              onChange={()=> setWinnerPrediction(option.value)}
                               className="w-5 h-5 accent-yellow-400 cursor-pointer scale-125"
                               />
-                              <span className={`text-lg font-bold ${scorerPrediction === option.value ? 'text-yellow-400' : 'text-white'}`}>{option.label}</span>
-                          </div>
-                          <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">သင့်အဖြေ</span>
+                              <span className={`text-lg font-bold ${winnerPrediction === option.value ? 'text-yellow-400' : 'text-white'}`}>{option.label}</span>
+                            
+                            </div>
 
-                        </label>
-                    ))}
+                            <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">သင့်အဖြေ</span>
+
+                          </label>
+                      ))}
+                      </div>
                   </div>
+                  {/* WHO WILL WIN SECTION */}
 
-              </div>
-              {/* WHO WILL SCORE FIRST SECTION */}
+                  {/* WHO WILL SCORE FIRST SECTION */}
+                  <div className="w-full flex flex-col gap-6">
+
+                      <div className={`${sectionTitleGradient} p-[2px] rounded-full shadow-lg`}>
+
+                        <div className="bg-black/20 backdrop-blur-sm text-center py-2 px-6 rounded-full">
+                            <span className="text-white font-black text-xl tracking-tighter uppercase italic">
+                            Who will score first?
+                            </span>
+                        </div>
+
+                      </div>
+
+                      <div className="space-y-2 px-2">
+                        {[
+                            { label: "None", value: "none" },
+                            { label: state.home, value: "home" },
+                            { label: state.away, value: "away" },
+                        ].map(option => (
+                            <label key={option.value} className={`flex items-center justify-between gap-4 cursor-pointer p-3 rounded-2xl transition-all border ${scorerPrediction === option.value ? 'bg-white/20 border-white/40 shadow-lg' : 'bg-transparent border-transparent hover:bg-white/5'}`}>
+                              
+                              <div className="flex items-center gap-4">
+                                  <input type="radio" name="scorefirst" value={option.value} checked={scorerPrediction === option.value}
+                                  onChange={() => setScorerPrediction(option.value)}
+                                  className="w-5 h-5 accent-yellow-400 cursor-pointer scale-125"
+                                  />
+                                  <span className={`text-lg font-bold ${scorerPrediction === option.value ? 'text-yellow-400' : 'text-white'}`}>{option.label}</span>
+                              </div>
+                              <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">သင့်အဖြေ</span>
+
+                            </label>
+                        ))}
+                      </div>
+
+                  </div>
+                  {/* WHO WILL SCORE FIRST SECTION */}
 
                 </div>
 
