@@ -9,8 +9,8 @@ import SelectModePage from './components/SelectModePage.jsx'
 
 import BettingPage from "./pages/Bettingdetail.jsx";
 import FootballMatchPage from './components/FootballMatchPage.jsx'
-import Test4 from './components/Test4.jsx'
-
+import BettingdetailPage from './components/BettingdetailPage.jsx'
+import SoccerQuizPage from './components/SoccerQuiz.jsx'
 
 
 function App() {
@@ -21,10 +21,12 @@ function App() {
         {/* <Route path='/' element={<WelcomePage/>} /> */}
         <Route path='/' element={<LoginPage/>} />
         <Route path='/homepage' element={<HomePage/>} />
+        <Route path="/quiz" element={<SoccerQuizPage />} />
         <Route path='/selectmode' element={<SelectModePage/>} />
         <Route path='/footballmatchpage' element={<FootballMatchPage/>} />
-        {/* <Route path="/betting" element={<BettingPage />} /> */}
-        <Route path="/betting" element={<Test4 />} />
+        <Route path="/betting" element={<BettingPage />} />
+        <Route path="/betting" element={<BettingPage />} />
+        {/* <Route path="/betting" element={<BettingdetailPage />} /> */}
       </Routes>
     </>
   )
