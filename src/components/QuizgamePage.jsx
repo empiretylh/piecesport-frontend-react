@@ -13,6 +13,7 @@ import united from "../assets/img/footballmatchimg/manu.png";
 
 import background1 from "../assets/img/footballmatchimg/bgcyber.png";
 import background2 from "../assets/img/footballmatchimg/bg2.jpg";
+import background3 from "../assets/img/welcomeImg/background2.png";
 
 export default function QuizGamePage() {
 
@@ -130,7 +131,8 @@ export default function QuizGamePage() {
 
             {/* <div className="absolute z-99 w-full h-50 mt-20 opacity-60" style={{ backgroundImage: `url(${background1})`, backgroundRepeat: `no-repeat`, backgroundPosition: `center`, backgroundSize: "cover"}}></div> */}
 
-            <div className="h-screen w-full overflow-hidden flex flex-col items-center justify-between p-3 bg-gradient-to-br from-slate-400 via-blue-400 to-amber-400">
+            <div className="h-screen w-full overflow-hidden flex flex-col items-center justify-between p-3 bg-gradient-to-br from-slate-400 via-blue-400 to-amber-400"
+            style={{ backgroundImage: `url(${background3})`, backgroundRepeat: `no-repeat`, backgroundPosition: `center`, backgroundSize: "cover"}}>
 
                 {/* Back Btn */}
                 <div className="w-full flex items-center justify-between px-6 py-2 z-10">
@@ -222,7 +224,7 @@ export default function QuizGamePage() {
                                     {quizData[currentQuestion].options.map((option) => (
 
                                     <button key={option} onClick={() => setSelectedAnswer(option)} className={`w-full rounded-xl py-4 font-bold transition
-                                    ${selectedAnswer === option ? "bg-gradient-to-r from-blue-600 to-yellow-400 text-white scale-[1.02]"
+                                    ${selectedAnswer === option ? "bg-gradient-to-r from-blue-600 to-pink-400 text-white scale-[1.02]"
                                     : "bg-white text-black hover:bg-gray-200"}`}>
                                         {option}
                                     </button>
@@ -233,7 +235,7 @@ export default function QuizGamePage() {
 
                                 {/* NEXT BTN */}
                                 <button disabled={!selectedAnswer} onClick={handleNext} className={`w-full py-4 rounded-xl font-bold transition
-                                ${selectedAnswer ? "bg-gradient-to-r from-blue-600 to-yellow-400 text-white hover:brightness-110"
+                                ${selectedAnswer ? "bg-gradient-to-r from-blue-600 to-pink-400 text-white hover:brightness-110"
                                 : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
                                     {currentQuestion + 1 === quizData.length ? "Finish" : "Next"}
                                 </button>
@@ -261,14 +263,14 @@ export default function QuizGamePage() {
                             {/* ACTIONS */}
                             <div className="flex flex-col gap-3">
 
-                                <button onClick={() => setShowReview(!showReview)} className="w-full py-3 rounded-xl bg-yellow-400 text-black font-bold cursor-pointer">
+                                <button onClick={() => setShowReview(!showReview)} className="w-full py-3 rounded-xl bg-pink-400 text-black font-bold cursor-pointer">
                                     {showReview ? "Hide Answers" : "Recheck My Answers"}
                                 </button>
 
                                 <button onClick={handlePlayAgain} className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold 
                                 cursor-pointer">Play Again</button>
 
-                                <button onClick={()=> navigate("/quiz")} className="w-full py-3 rounded-xl bg-red-500 text-white font-bold
+                                <button onClick={()=> navigate("/quiz")} className="w-full py-3 rounded-xl bg-gray-900 text-white font-bold
                                 cursor-pointer">Exit</button>
 
                             </div>

@@ -8,6 +8,9 @@ import titletwo from "../assets/img/footballmatchimg/titletwo.png";
 import titlethree from "../assets/img/footballmatchimg/titlethree.png";
 import titlefour from "../assets/img/footballmatchimg/titlefour.png";
 
+import background1 from "../assets/img/welcomeImg/background2.png";
+
+
 export default function BettingPage() {
 
   const { state } = useLocation();
@@ -25,8 +28,8 @@ export default function BettingPage() {
   const [isOpen, setIsOpen] = useState(false);
 
 
-  const sectionTitleGradient = "bg-gradient-to-r from-blue-700 via-blue-600 to-yellow-400";
-  const ruleButtonGradient = "bg-gradient-to-r from-blue-700 via-blue-600 to-yellow-500";
+  const sectionTitleGradient = "bg-gradient-to-r from-blue-700 via-blue-600 to-pink-400";
+  const ruleButtonGradient = "bg-gradient-to-r from-blue-700 via-blue-600 to-pink-500";
 
 
    const handleConfirm = ()=> {
@@ -54,7 +57,7 @@ export default function BettingPage() {
     <div className="w-full min-h-screen bg-gray-200 flex justify-center">
       <div className="w-full max-w-[450px] min-h-screen overflow-hidden relative">
 
-        <div className="h-screen w-full flex flex-col font-sans overflow-hidden" style={{ background: `linear-gradient(135deg, #4299E1 0%, #3182CE 20%, #48BB78 40%, #ECC94B 60%, #4299E1 80%, #3182CE 100%),#3182CE`}}>
+        <div className="h-screen w-full flex flex-col font-sans overflow-hidden" style={{ backgroundImage: `url(${background1})`, backgroundRepeat: `no-repeat`, backgroundPosition: `center`, backgroundSize: "cover"}}>
 
           {/* Back Button */}
           <div className="absolute m-4 z-99">
@@ -111,7 +114,7 @@ export default function BettingPage() {
           <div className="relative z-10 w-full flex flex-col items-center text-center gap-1 -mt-12 animate-[scalePulse_1.5s_ease-in-out_infinite] select-none">
 
             <h3 className="text-blue-800 text-2xl sm:text-3xl font-bold drop-shadow-md my-Font">20000Ks</h3>
-            <h2 className="text-yellow-300 text-4xl sm:text-5xl font-extrabold sugar-text">Challenge</h2>
+            <h2 className="text-[#FF6B6B] text-4xl sm:text-5xl font-extrabold sugar-text">Challenge</h2>
 
           </div>
 

@@ -17,8 +17,13 @@ import united from "../assets/img/footballmatchimg/manu.png";
 
 import background1 from "../assets/img/footballmatchimg/bgcyber.png";
 import background2 from "../assets/img/footballmatchimg/bg2.jpg";
+import background3 from "../assets/img/welcomeImg/background2.png";
 
-export default function Test3() {
+import coinimg from "../assets/img/footballmatchimg/coin1.png";
+import coinimg2 from "../assets/img/footballmatchimg/coin2.png";
+
+
+export default function FootballMatchPage() {
 
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -38,6 +43,7 @@ export default function Test3() {
 
   console.log("TOKEN FROM STORAGE:", localStorage.getItem("token"));
   
+  // Fetch Matches 
   useEffect(() => {
     const fetchMatches = async () => {
       try {
@@ -56,7 +62,6 @@ export default function Test3() {
         console.log(data);
 
         if (res.ok && data.data?.length > 0) {
-          // setMatches(data.data);
           const formattedMatches = data.data.map((m) => ({
             ...m,
             team1_logo: `https://ps-api-stg.illuminati.com.mm${m.team1_logo}`,
@@ -113,8 +118,8 @@ export default function Test3() {
 
     fetchMatches();
   }, []);
+  // Fetch Matches 
 
-  
   useEffect(() => {
     const storedbets = JSON.parse(localStorage.getItem("bets")) || {};
     setBets(storedbets);
@@ -133,7 +138,6 @@ export default function Test3() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
 
   function Match({ m, isBetted, selectedMatch, setSelectedMatch }){
     return (
@@ -192,6 +196,12 @@ export default function Test3() {
     return 1000; 
   };
 
+   const rewardnotiboxes = [
+    {id:1,prize:"50,000"},
+    {id:2,prize:"30,000"},
+    {id:3,prize:"10,000"}
+  ]
+
   return (
     <div className="w-full min-h-screen bg-gray-200 flex justify-center">
       <div className="w-full max-w-[450px] min-h-screen overflow-hidden relative">
@@ -199,7 +209,7 @@ export default function Test3() {
         {/* <div className="absolute z-99 w-full h-50 mt-20 opacity-60" style={{ backgroundImage: `url(${background1})`, backgroundRepeat: `no-repeat`, backgroundPosition: `center`, backgroundSize: "cover"}}></div> */}
 
         <div className="h-screen w-full overflow-hidden flex flex-col items-center justify-between p-3 bg-gradient-to-br from-slate-400 via-blue-400 to-amber-400"
-        >
+        style={{ backgroundImage: `url(${background3})`, backgroundRepeat: `no-repeat`, backgroundPosition: `center`, backgroundSize: "cover"}}>
 
           {/* Back Btn */}
           <div className="w-full flex items-center justify-between px-6 py-2 z-10">
@@ -278,7 +288,7 @@ export default function Test3() {
             {/* TABS */}
             <div className="relative flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm overflow-hidden">
 
-              <div className="absolute top-1 bottom-1 left-1 rounded-full bg-gradient-to-r from-blue-600 to-yellow-400 transition-all duration-300" 
+              <div className="absolute top-1 bottom-1 left-1 rounded-full bg-gradient-to-r from-blue-600 to-pink-400 transition-all duration-300" 
               style={{ width: `calc((100% - 0.5rem) / ${tabs.length})`,left:`calc(${activeIndex} * ((100% - 0.5rem) / ${tabs.length}) + 0.25rem )` }}></div>
 
               {/* Btns */}
@@ -293,41 +303,119 @@ export default function Test3() {
 
 
             {/* HEADER */}
-            <div className="mx-3 flex-shrink-0 rounded-xl bg-gradient-to-r from-blue-600 to-yellow-400 text-white text-center py-2 text-sm">Prediction Week - 9</div>
+            {activeTab !== "reward" && (
+              <div className="mx-3 flex-shrink-0 rounded-xl bg-gradient-to-r from-blue-600 to-pink-400 text-white text-center py-2 text-sm">Prediction Week - 9</div>
+            )}
 
             {/* MATCH CONTENT AREA */}
             <div className="flex-1 flex flex-col min-h-0 px-3 py-2">
 
               {/* MATCH LIST */}
               <div className="flex-1 overflow-y-auto scrollbars">
-                  
-                {loading ? (
-                  <div className="text-white text-center py-4">Loading matches...</div>
-                ) : matches.length === 0 ? (
-                  <div className="text-white text-center py-10">No Matches Available</div>
-                ) : (
-                  matches.map((m, index) => {
 
-                    const matchKey = `${m.team1_name}_vs_${m.team2_name}`;
-                    const isBetted = bets[matchKey];
-                    
-                    return(
-                      <Match key={index} m={m} isBetted={isBetted} selectedMatch={selectedMatch} setSelectedMatch={setSelectedMatch} />
-                    )
+                {/* Match Tab  */}
+                {activeTab === "match" && (
+                  <>
+                    { loading ? (
+                    <div className="text-white text-center py-4">Loading matches...</div>
+                    ) : matches.length === 0 ? (
+                    <div className="text-white text-center py-10">No Matches Available</div>
+                    ) : (
+                    matches.map((m, index) => {
 
-                  })
+                      const matchKey = `${m.team1_name}_vs_${m.team2_name}`;
+                      const isBetted = bets[matchKey];
+                        
+                      return(
+                        <Match key={index} m={m} isBetted={isBetted} selectedMatch={selectedMatch} setSelectedMatch={setSelectedMatch} />
+                      )
+
+                      })
+                    )}
+                  </>
                 )}
+                {/* Match Tab  */}
+
+                {/* Reward Tab  */}
+                {activeTab === "history" && (
+                  <div>History</div>
+                )}
+                {/* Reward Tab  */}
+
+                {/* Reward Tab  */}
+                {activeTab === "reward" && (
+                  <div className="flex flex-col gap-2">
+
+                    {rewardnotiboxes.map((reward) => (
+                      <div key={reward.id} className="grid grid-cols-2 items-center text-white text-sm border-b p-4 border-white/30 bg-black/40 rounded-xl backdrop-blur-md cursor-pointer hover:bg-gray-700">
+
+                        <div className="flex items-center gap-2">
+                          <img src={coinimg2} alt="coin-left" className="w-8 h-8 object-contain animate-pulse"/>
+
+                          <div className="flex flex-col">
+                            <span className="font-bold text-yellow-300">
+                              Reward Ready
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* <div className="text-center">
+                          <div className="font-extrabold text-yellow-300 text-base">
+                            50,000
+                          </div>
+
+                          <div className="text-xs text-white/70">
+                            Coins
+                          </div>
+                        </div> */}
+
+                        <div className="flex items-center justify-end gap-2">
+
+                          {/* <button className="bg-gradient-to-r from-blue-600 to-pink-400 px-3 py-1 rounded-full text-xs font-bold hover:brightness-110 active:scale-95 transition cursor-pointer">
+                            Claim
+                          </button> */}
+                          <div className="text-center">
+                            <div className="font-extrabold text-yellow-300 text-sm">
+                              MPT Phone Bill
+                            </div>
+
+                            <div className="text-sm text-white/70 font-bold">
+                              {reward.prize}
+                            </div>
+                          </div>
+
+                          <img src={coinimg2} alt="coin-right" className="w-8 h-8 object-contain animate-pulse" />
+
+                        </div>
+
+                      </div>
+                    ))}
+
+                  </div>
+                )}
+                {/* Reward Tab  */}
 
               </div>
 
               {/* Play btn */}
-              <div className="flex-shrink-0 pt-2">
-                <button disabled={!selectedMatch} onClick={handlePlayClick}
-                className={`w-full py-3 rounded-xl text-white font-bold transition ${selectedMatch? "bg-gradient-to-r from-blue-600 to-yellow-400 hover:brightness-110 active:scale-95"
-                : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
-                  Play
-                </button>
-              </div>
+              {activeTab === "match" && (
+                <div className="flex-shrink-0 pt-2">
+                  <button disabled={!selectedMatch} onClick={handlePlayClick}
+                  className={`w-full py-3 rounded-xl text-white font-bold transition ${selectedMatch? "bg-gradient-to-r from-blue-600 to-pink-400 hover:brightness-110 active:scale-95"
+                  : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}>
+                    Play
+                  </button>
+                </div>
+              )}
+
+              {activeTab === "reward" && (
+                <div className="flex-shrink-0 pt-2">
+                  <button disabled={rewardnotiboxes.length <= 0} className={`w-full py-3 rounded-xl text-white font-bold transition ${rewardnotiboxes.length !== 0 ? "bg-gradient-to-r from-blue-600 to-pink-400 hover:brightness-110 active:scale-95 cursor-pointer" 
+                  : "bg-gray-400 text-gray-700 cursor-not-allowed" }`}>
+                    Claim All
+                  </button>
+                </div>
+              )}
 
 
             </div>
@@ -342,7 +430,8 @@ export default function Test3() {
 
           <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-yellow-400 text-black w-20 h-20 rounded-full flex items-center justify-center text-3xl shadow-lg">
             {/* 💰 */}
-            💎
+            {/* 💎 */}
+            <img src={coinimg} alt="coinimg" />
           </div>
 
           {/* TITLE */}
@@ -358,7 +447,7 @@ export default function Test3() {
               Decline
             </button>
 
-            <button onClick={handleConfirm} className="flex-1 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-yellow-400 text-white font-bold hover:brightness-110 transition" >
+            <button onClick={handleConfirm} className="flex-1 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-pink-400 text-white font-bold hover:brightness-110 transition" >
               Continue
             </button>
           </div>

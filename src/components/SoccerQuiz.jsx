@@ -10,7 +10,9 @@ import titlefour from "../assets/img/footballmatchimg/titlefour.png";
 
 import background1 from "../assets/img/footballmatchimg/bgcyber.png";
 import background2 from "../assets/img/footballmatchimg/bg2.jpg";
+import background3 from "../assets/img/welcomeImg/background2.png";
 import quizplaybtn from "../assets/img/footballmatchimg/soccerquiz.png";
+
 
 
 export default function SoccerQuizPage() {
@@ -71,7 +73,8 @@ export default function SoccerQuizPage() {
     <div className="w-full min-h-screen bg-gray-200 flex justify-center">
         <div className="w-full max-w-[450px] min-h-screen overflow-hidden relative">
 
-            <div className="h-screen w-full overflow-hidden flex flex-col items-center justify-between p-3 bg-gradient-to-br from-slate-400 via-blue-400 to-amber-400">
+            <div className="h-screen w-full overflow-hidden flex flex-col items-center justify-between p-3 bg-gradient-to-br from-slate-400 via-blue-400 to-amber-400"
+            style={{ backgroundImage: `url(${background3})`, backgroundRepeat: `no-repeat`, backgroundPosition: `center`, backgroundSize: "cover"}}>
 
                 {/* Back Btn */}
                 <div className="w-full flex items-center justify-between px-6 py-2 z-10">
@@ -144,7 +147,7 @@ export default function SoccerQuizPage() {
                     {/* TABS */}
                     <div className="relative flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm overflow-hidden">
 
-                        <div className="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-blue-600 to-yellow-400 transition-all duration-300" 
+                        <div className="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-blue-600 to-pink-400 transition-all duration-300" 
                         style={{ width: `calc((100% - 0.5rem) / ${tabs.length})`,left:`calc(${activeIndex} * ((100% - 0.5rem) / ${tabs.length}) + 0.25rem )` }}></div>
 
                         {/* Btns */}
