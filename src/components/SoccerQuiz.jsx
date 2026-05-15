@@ -18,7 +18,7 @@ export default function SoccerQuizPage() {
     const navigate = useNavigate();
     const dropdownRef = useRef(null);
 
-    const backArrowClick = ()=> navigate(-1);  
+    const backArrowClick = ()=> navigate("/homepage");  
 
     const [activeTab, setActiveTab] = useState("game");
     const [isOpen, setIsOpen] = useState(false);
