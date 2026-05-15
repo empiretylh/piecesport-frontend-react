@@ -15,13 +15,17 @@ import tv from "../assets/img/homepageimg/tv.png";
 import buycoins from "../assets/img/homepageimg/buycoins.png";
 
 import { User, Settings } from "lucide-react";
+import { Toaster, toast }from "react-hot-toast";
 
 export default function Test() {
 
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
-    const handlePlay = ()=> navigate("/");
+    const handlePlay = ()=>{
+        toast.success("Logout");
+        navigate("/");
+    };
     const playandwinBtn = ()=> navigate("/selectmode");
     const quizBtn = ()=> navigate("/quiz");
 
@@ -68,12 +72,12 @@ export default function Test() {
                         </div>               
 
                         <div className="relative w-full h-[25vh] max-h-[180px] sm:max-h-[150px] flex items-end justify-center">
-                            <img src={leftplayer} alt="left" className="absolute left-0 bottom-2 h-[26vh] max-h-[260px] w-auto object-contain"/>
+                            <img src={leftplayer} alt="left" className="absolute z-99 left-0 bottom-2 h-[26vh] max-h-[260px] w-auto object-contain"/>
                             <div className="w-full flex justify-center sm:justify-evenly h-[14vh] max-h-[100px] min-h-[60px] mb-10 md:mb-12 z-10 ">
                                 <img src={text1} alt="text1" className="h-25 w-auto object-contain animate-bounce [animation-duration:1.5s] [animation-delay:0.5s]" />
                                 <img src={footballicon} alt="football" className="h-25 w-auto object-contain" />
                             </div>
-                            <img src={rightplayer} alt="right" className="absolute right-0 bottom-2 h-[26vh] max-h-[260px] w-auto object-contain"/>
+                            <img src={rightplayer} alt="right" className="absolute z-99 right-0 bottom-2 h-[26vh] max-h-[260px] w-auto object-contain"/>
                         </div>
 
                     </section>

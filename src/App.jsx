@@ -11,6 +11,8 @@ import BettingPage from "./pages/Bettingdetail.jsx";
 import FootballMatchPage from './components/FootballMatchPage.jsx'
 import BettingdetailPage from './components/BettingdetailPage.jsx'
 import SoccerQuizPage from './components/SoccerQuiz.jsx'
+import QuizGamePage from './components/QuizgamePage.jsx'
+
 
 
 function App() {
@@ -22,9 +24,9 @@ function App() {
         <Route path='/' element={<LoginPage/>} />
         <Route path='/homepage' element={<HomePage/>} />
         <Route path="/quiz" element={<SoccerQuizPage />} />
+        <Route path="/quiz/game" element={<QuizGamePage />} />
         <Route path='/selectmode' element={<SelectModePage/>} />
         <Route path='/footballmatchpage' element={<FootballMatchPage/>} />
-        <Route path="/betting" element={<BettingPage />} />
         <Route path="/betting" element={<BettingPage />} />
         {/* <Route path="/betting" element={<BettingdetailPage />} /> */}
       </Routes>

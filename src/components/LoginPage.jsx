@@ -28,6 +28,9 @@ export default function LoginPage() {
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
+    const [swapPlayers, setSwapPlayers] = useState(false);
+    const [fade, setFade] = useState(true);
+
     const handlePlay = () => {
         if (number.length === 0) {
             alert("Please enter your number first");
@@ -64,6 +67,21 @@ export default function LoginPage() {
         };
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFade(false);
+
+            setTimeout(() => {
+                setSwapPlayers(prev => !prev);
+                setFade(true);
+            }, 500);
+
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    
     const formatPhone = (phone) =>{
         let cleaned = phone.replace(/\D/g, "");
 
@@ -239,11 +257,13 @@ export default function LoginPage() {
                 {/* Player Images Section */}
                 <div className="relative w-full flex justify-center mt-10">
 
-                    <img src={leftplayer} alt="left" className="absolute left-0 -bottom-5 sm:bottom-5 w-22 z-10"/>
+                    <img src={swapPlayers ? rightplayer : leftplayer} alt="left" className={`absolute left-0 -bottom-5 sm:bottom-5 w-22 z-10 transition-opacity duration-500
+                    ${fade ? "opacity-100" : "opacity-0"} ${swapPlayers ? "scale-x-[-1]" : ""}`}/>
                     <div className="block z-99 sm:-translate-y-2">
-                        <img src={footballicon} className="w-50 animate-[scalePulse_1.5s_ease-in-out_infinite]" />
+                        <img src={footballicon} className="w-50 animate-[scalePulse_1.5s_ease-in-out_infinite]" alt="footballicon"/>
                     </div>
-                    <img src={rightplayer} alt="right" className="absolute right-0 -bottom-5 sm:bottom-5 w-22 z-10"/>
+                    <img src={swapPlayers ? leftplayer : rightplayer} alt="right" className={`absolute right-0 -bottom-5 sm:bottom-5 w-22 z-10 transition-opacity duration-500
+                    ${fade ? "opacity-100" : "opacity-0"} ${swapPlayers ? "scale-x-[-1]" : ""}`}/>
 
                 </div>
                 {/* Player Images Section */}

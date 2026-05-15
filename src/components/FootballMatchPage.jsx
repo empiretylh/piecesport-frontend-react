@@ -279,7 +279,7 @@ export default function Test3() {
             <div className="relative flex flex-shrink-0 bg-white/80 rounded-full m-3 p-1 text-sm overflow-hidden">
 
               <div className="absolute top-1 bottom-1 left-1 rounded-full bg-gradient-to-r from-blue-600 to-yellow-400 transition-all duration-300" 
-              style={{ width: `calc(100% / ${tabs.length} - 0.5rem)`,transform: `translateX(${activeIndex * 100}%)`,}}></div>
+              style={{ width: `calc((100% - 0.5rem) / ${tabs.length})`,left:`calc(${activeIndex} * ((100% - 0.5rem) / ${tabs.length}) + 0.25rem )` }}></div>
 
               {/* Btns */}
               {tabs.map((tab) => (
